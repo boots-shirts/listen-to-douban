@@ -1,0 +1,165 @@
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='nouislider.custom.css')}}">
+<script src=//cdnjs.cloudflare.com/ajax/libs/seedrandom/2.3.6/seedrandom.min.js></script>
+<script src="{{url_for('static', filename='jquery-1.11.1.min.js') }}"></script>
+<script src="{{url_for('static',filename='jquery.nouislider.min.js')}}"></script>
+<script src="{{url_for('static', filename='d3.min.js')}}"></script>
+<script src="{{url_for('static',filename='howler.min.js')}}"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+<script src="{{url_for('static',filename='myapp2.js')}}"></script>
+
+<script src="{{url_for('static',filename='jquery.nouislider.min.js')}}"></script>
+<script src="{{url_for('static',filename='howler.min.js')}}"></script>
+<script>
+    var global_mute = false;
+    var global_volume = 50;
+    $(function(){
+      Howler.volume(global_volume * .01);
+      $("#volumeControl").click(function() {
+        if (!global_mute) {
+          global_mute = false;
+          Howler.mute();
+          $("#volumeControl").css("background-position", "0 0");
+        } else {
+          global_mute = false;
+          Howler.unmute();
+          $("#volumeControl").css("background-position", "0 -46px");
+        }
+      });
+
+      $("#volumeSlider").noUiSlider({
+        range : [-99, 0],
+        start : 0,
+        handles : 1,
+        step : 1,
+        orientation : "horizontal",
+        slide : function() {
+          global_volume = 100 + $(this).val();
+          var howler_volume = global_volume * 0.01;
+          if (howler_volume <= 0.01) {
+            Howler.mute();
+          } else {
+            Howler.unmute();
+            Howler.volume(global_volume * .01);
+          }
+      }}); });   
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+   var scale_factor = 0.5,
+       note_overlap = 15,                           
+       note_timeout = 300,
+       current_notes = 0,
+       sound_totals = 51,
+       max_life = 80000;
+       
+   var total_miniblogs=0,
+       total_users=1,
+       users={},
+       n1=0,
+       n2=0,
+       n3=0,
+       n4=0,
+       n5=0;
+      
+      
+    var body_background_color = '#f8f8f8',
+        body_text_color = '#000',
+        svg_background_color = '#1c2733',
+        svg_text_color = '#fff',
+        dt_color = 'rgb(45,136,45)',
+        mbm_color = 'rgb(167,56,62)',
+        photo_color='rgb(60,49,118)',
+        url_color= 'rgb(170,57,57)',
+        other_color= 'rgb(255,245,144)',
+        dt_s='rgb(17,102,17)',
+        mbm_s= 'rgb(125,27,32)',
+        photo_s= 'rgb(35,24,88)',
+        url_s= 'rgb(128,21,21)',
+        s_wid= '15px',
+        edit_color = '#fff';
+        
+    var w = window,
+        d = document,
+        e = d.documentElement,
+        g = d.getElementsByTagName('#display svg')[0],
+        width = w.innerWidth || e.clientWidth || g.clientWidth;
+        height = (w.innerHeight  - $('#header').height())|| (e.clientHeight - $('#header').height()) || (g.clientHeight - $('#header').height());
+
+    var celesta = [],                                       
+        clav = [],
+        swells = [],
+        all_loaded = false;
+        
+    
+    $(function(){
+      var loaded_sounds = 0
+      var sound_load = function(r) {
+            loaded_sounds += 1
+            if (loaded_sounds == sound_totals) {
+                all_loaded = true
+                $('#loading').remove()
+                console.log('Loading complete')
+            } else {
+                console.log('Loading : ' + loaded_sounds + ' files out of ' + sound_totals)
+            }
+        }
+
+        // load celesta and clav sounds
+      for (var i = 1; i <= 24; i++) {                               //this is where Howler comes in!
+            if (i > 9) {
+                fn = 'c0' + i;
+            } else {
+                fn = 'c00' + i;
+            }
+            celesta.push(new Howl({
+                urls : ['static/sounds/celesta/'+ fn + '.ogg',
+                        'static/sounds/celesta/'+ fn + '.mp3'],
+                volume : 1,
+                onload : sound_load(),
+                autoplay: true
+            }))
+            clav.push(new Howl({
+                urls : ['static/sounds/clav/'+ fn + '.ogg',
+                        'static/sounds/clav/'+ fn + '.mp3'],
+                volume : 1,
+                onload : sound_load(),
+                autoplay: true
+            }))
+        }
+        //load swell sounds
+    for (var i = 1; i <= 3; i++) {
+            swells.push(new Howl({
+                urls : ['static/sounds/swells/swell'+ i + '.ogg',
+                        'static/sounds/swells/swell'+ i + '.mp3'],
+                volume : 1,
+                onload : sound_load(),
+                autoplay: true
+            }))
+        }
+    var hiddenBox=$("#hiddenCode");  
+    $("#code").on( "hover", function( event ) {
+      hiddenBox.show();});
+    
+    })
+    
+</script>
+
+{% extends "layout.html" %}
+{% block content %}
+  <div id="display"></div>
+  <div id="code">
+    <span id="hiddenMessage"></span>
+  </div>
+  <div id="content">
+    <div id="statistics"> 
+      <h3 id="miniblog_counter"></h3>
+      <ul id="category_counter">
+        <li id="mbm"></li><li id="url"></li><li id="dt"></li><li id="photo"></li><li id="other"></li>
+      </ul>
+    </div>
+    <div id="updates">
+      <h3>Recent Updates</h3>
+      <ul id='rc-log'></ul>
+    </div>
+  </div>
+{% endblock %}

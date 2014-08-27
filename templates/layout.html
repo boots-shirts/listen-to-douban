@@ -1,0 +1,29 @@
+<html>
+<head>
+    <title>listen to douban</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='douban_style.css')}}">
+    
+</head>
+
+<body>
+    <div id='header'>
+      <span class="about-link">
+        <span id="volumeWrapper" class="interface">
+          <span id="volumeSlider" class="noUiSlider"></span>
+        </span><a id="about-link" href="{{url_for('about')}}">about</a> &amp; <a href="{{url_for('logout')}}">logout</a></span>
+      <h1>Listen to Douban</h1>
+    </div>
+    
+    <div class="main_container">
+        {%block content%}
+        {%endblock%}
+    </div>
+    
+    <div id="footer">
+        <div>    
+        </div>
+    </div>
+    
+
+</body>
+</html>

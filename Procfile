@@ -1,0 +1,1 @@
+web: gunicorn --worker-class socketio.sgunicorn.GeventSocketIOWorker ajax2:app
