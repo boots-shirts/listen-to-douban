@@ -30,7 +30,7 @@ $(document).ready(function(){
     
     
     namespace='/_GET';                                               
-    var socket = io.connect('http://douban.artforsociety.net'+ namespace);   
+    var socket = io.connect('http://178.62.61.36:5000/'+ namespace);   
     
    
     
