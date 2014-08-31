@@ -30,7 +30,7 @@ $(document).ready(function(){
     
     
     namespace='/_GET';                                               
-    var socket = io.connect('http://178.62.61.36:5000/'+ namespace);   
+    var socket = io.connect('http://listen-to-douban.herokuapp.com/'+ namespace);   
     
    
     
