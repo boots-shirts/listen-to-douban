@@ -17,6 +17,7 @@ gevent==1.0.1
 gevent-socketio==0.3.6
 gevent-websocket==0.9.3
 greenlet==0.4.2
+gunicorn==0.17.2
 html5lib==0.95
 httplib2==0.9
 oauth2==1.5.211
