@@ -14,7 +14,7 @@ from flask.ext.socketio import SocketIO, emit
 
                      
 app = Flask(__name__)
-app.debug = True
+#app.debug = True
 app.secret_key = os.urandom(24)
 socketio = SocketIO(app)
 
@@ -156,8 +156,8 @@ def test_disconnect():
 
     
 
-if __name__ == '__main__':
-    socketio.run(app)
+#if __name__ == '__main__':
+#    socketio.run(app)
     
 
 
